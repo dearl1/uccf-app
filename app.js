@@ -29,6 +29,13 @@ app.get('/',(req, res)=>{
     res.render('index');
 })
 
+app.post('/fetch-CU', (req,res) => {
+    if (req.body.data === "") {
+        res.json({data: cuData})
+    }
+})
+
+
 app.listen(PORT), ()=>{
     console.log('listening on port ?');
 };
