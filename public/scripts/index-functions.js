@@ -106,7 +106,61 @@ function displayCUList(items) {
       tr.title = item.full_name;
     }
 
-    CUTable.appendChild(tr);
+    // Institutions
+    if (item.institutions && item.institutions.length > 0) {
+      // Put the first institution inline
+      const firstInst = item.institutions[0];
+
+      const nameTdInst = document.createElement("td");
+      nameTdInst.textContent = firstInst.name;
+
+      const postcodeTd = document.createElement("td");
+      postcodeTd.textContent = firstInst.postcode;
+      postcodeTd.title = `Geocode: ${firstInst.geocode}`;
+
+      const regionTd = document.createElement("td");
+      regionTd.textContent = firstInst.region?.name || "N/A";
+
+      tr.appendChild(nameTdInst);
+      tr.appendChild(postcodeTd);
+      tr.appendChild(regionTd);
+
+      CUTable.appendChild(tr);
+
+      // Remaining institutions to nested rows
+      item.institutions.slice(1).forEach(inst => {
+        const instTr = document.createElement("tr");
+        instTr.className = "nested-row";
+
+        // Empty cells for CU columns
+        for (let i = 0; i < 4; i++) {
+          const emptyTd = document.createElement("td");
+          instTr.appendChild(emptyTd);
+        }
+
+        const nameTdInst = document.createElement("td");
+        nameTdInst.textContent = inst.name;
+
+        const postcodeTd = document.createElement("td");
+        postcodeTd.textContent = inst.postcode;
+        postcodeTd.title = `Geocode: ${inst.geocode}`;
+
+        const regionTd = document.createElement("td");
+        regionTd.textContent = inst.region?.name || "N/A";
+
+        instTr.appendChild(nameTdInst);
+        instTr.appendChild(postcodeTd);
+        instTr.appendChild(regionTd);
+
+        CUTable.appendChild(instTr);
+      });
+    } else {
+      // No institutions so fill blank cells
+      const blankTd = document.createElement("td");
+      blankTd.colSpan = 3;
+      tr.appendChild(blankTd);
+      CUTable.appendChild(tr);
+    }
 
   });
 }
