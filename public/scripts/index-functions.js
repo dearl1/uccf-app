@@ -22,15 +22,34 @@ window.onload = async function () {
 function displayCUList(items) {
   const CUTable = document.getElementById("CU-table");
   CUTable.innerHTML = "";
-  const tr = document.createElement("tr");
-  CUTable.appendChild(tr);
+
+  items.forEach(item => {
+    const tr = document.createElement("tr");
+
+    // Name
+    const nameTd = document.createElement("td");
+    nameTd.textContent = item.name;
+
+    // Abbreviation
+    const abbrevTd = document.createElement("td");
+    abbrevTd.textContent = item.abbreviation ?? "-";
+
+    // Campus
+    const campusTd = document.createElement("td");
+    campusTd.textContent = item.campus ?? "-";
 
 
-  // Name
-  const nameTd = document.createElement("td");
-  nameTd.textContent = items[0].name;  
-  tr.appendChild(nameTd);
-  
+    tr.appendChild(nameTd);
+    tr.appendChild(abbrevTd);
+    tr.appendChild(campusTd);
+
+    if (item.full_name) {
+      tr.title = item.full_name;
+    }
+
+    CUTable.appendChild(tr);
+
+  });
 }
 
 
